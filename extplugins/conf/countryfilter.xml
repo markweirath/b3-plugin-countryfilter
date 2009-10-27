@@ -1,0 +1,90 @@
+<configuration plugin="countryfilter">
+
+	<settings name="commands">
+		<set name="cfcountry-country">40</set>
+	</settings>
+
+	<settings name="settings">
+
+    <!--
+    'code': 2 character code ie: NL
+    'code3': 3 character code ie: NLD
+    'name': full name ie: Netherlands
+    -->
+    <set name="cf_country_print_mode">name</set>
+
+    <!--
+    Specify Countries that will not generate messages.
+    LAN (private ranges) = - - (but without the whitespace!)
+    ALL Countries = all
+    or use the Countrycode with 2 characters
+    -->    
+    <set name="cf_message_exclude_from">none</set>
+
+    <!--
+    You can limit the connection by using cf_allow_from,
+    cf_deny_from, and cf_order. Please specify this by the country
+    code of two characters. Basically, it is the same as the
+    mod_access module of Apache. See this URL:
+
+    http://httpd.apache.org/docs/mod/mod_access.html
+
+    Examples:
+    
+    Allowing only NL and US. Others are denied:
+    <set name="cf_order">deny,allow</set>
+    <set name="cf_deny_from">all</set>
+    <set name="cf_allow_from">NL US</set>
+    
+    Denying only US. Others are allowed:
+    <set name="cf_order">allow,deny</set>
+    <set name="cf_allow_from">all</set>
+    <set name="cf_deny_from">US</set>
+
+    If you want to find country codes, refer to this page.
+    http://www.maxmind.com/app/iso3166
+    -->    
+    <set name="cf_order">allow,deny</set>
+    <set name="cf_allow_from">all</set>
+    <set name="cf_deny_from">none</set>
+
+    <!--
+    Specify the path of GeoIP.dat file.
+    -->    
+    <set name="cf_geoipdat_path">b3/extplugins/GeoIP/GeoIP.dat</set>
+
+	</settings>
+
+	<settings name="messages">
+
+    <!--
+    Message when player is allowed to connect.
+    $name is replaced with player name.
+    $country is replaced with country name.
+    An empty message will make allowed connections silent 
+    -->    
+    <set name="cf_allow_message">^7$name ^2(Country: $country)^7 connected.</set>
+
+    <!--
+    Message when player is denied.
+    %(name)s is replaced with player name.
+    %(country)s is replaced with country name.
+    An empty message will make allowed connections silent 
+    -->    
+    <set name="cf_deny_message">^7$name ^1(Country: $country)^7 was rejected by B3.</set>
+
+  <settings name="ignore">
+    <!--
+    Add a list of names of players that will be able to allways connect.
+    Seperate names with a ,
+    -->    
+    <set name="names"></set>
+    <!--
+    Add a list of IP's of players that will be able to allways connect.
+    Seperate ip's with a ,
+    -->    
+    <set name="ips"></set>
+  </settings>
+
+	</settings>
+</configuration>

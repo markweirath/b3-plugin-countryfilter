@@ -1,0 +1,68 @@
+###################################################################################
+#
+# Plugin for B3 (www.bigbrotherbot.com)
+# Library and original code for Battlefield2 by Guwashi <guwashi[AT]fooos[DOT]com>
+# Plugin (c) 2006 www.xlr8or.com (mailto:xlr8or@xlr8or.com)
+#
+# This program is free software and licensed under the terms of
+# the GNU General Public License (GPL), version 2.
+#
+# http://www.gnu.org/copyleft/gpl.html
+#
+# This product includes GeoIP data created by MaxMind, available
+# from http://maxmind.com/
+###################################################################################
+
+Countryfilter (v1.1.x) for B3
+###################################################################################
+This plugin provides an allow/deny mechanism for connecting players based on their
+Country-IP (GeoIP data). It announces connecting players in the server so you can
+see where the player is connecting from. Even if you don't have anny countries
+on the deny list, it's still nice to see where your playercrowd is connecting from!
+
+- !cfcountry <player> will return the country the player is connecting from.
+
+
+Requirements:
+###################################################################################
+
+- B3 version 1.1.0 or higher
+- CoD(any version) with PunkBuster enabled!
+
+
+Installation:
+###################################################################################
+
+1. Unzip the contents of this package into your B3 folder. It will
+place the .py file in b3/extplugins and the config file .xml in
+your b3/extplugins/conf folder. It will create a subfolder called GeoIP with
+a python library and GeoIP data.
+
+2. Open the .xml file with your favorit editor and modify the
+settings if you want them different. Do not edit the settingnames
+for they will not function under a different name.
+
+3. Open your B3.xml file (in b3/conf) and add the next line in the
+<plugins> section of the file:
+
+<plugin name="countryfilter" priority="12" config="@b3/extplugins/conf/countryfilter.xml"/>
+
+The numer 12 in this just an example. Make sure it fits your
+plugin list.
+
+
+Updating the Geo-data:
+###################################################################################
+Download GeoIP.dat from
+http://www.maxmind.com/download/geoip/database/GeoIP.dat.gz
+and extract it into b3/extplugins/GeoIP/
+
+
+Changelog
+###################################################################################
+v1.0.0         : Initial release
+v1.1.0         : Added !cfcountry command for already connected players
+v1.1.2         : Bugfix version
+
+###################################################################################
+xlr8or - 7 may. 2007 - www.bigbrotherbot.com // www.xlr8or.com
