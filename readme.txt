@@ -26,7 +26,7 @@ on the deny list, it's still nice to see where your playercrowd is connecting fr
 Requirements:
 ###################################################################################
 
-- B3 version 1.1.0 or higher
+- B3 version 1.2.2 or higher
 - CoD(any version) with PunkBuster enabled!
 
 
@@ -35,8 +35,7 @@ Installation:
 
 1. Unzip the contents of this package into your B3 folder. It will
 place the .py file in b3/extplugins and the config file .xml in
-your b3/extplugins/conf folder. It will create a subfolder called GeoIP with
-a python library and GeoIP data.
+your b3/extplugins/conf folder. 
 
 2. Open the .xml file with your favorit editor and modify the
 settings if you want them different. Do not edit the settingnames
@@ -47,15 +46,15 @@ for they will not function under a different name.
 
 <plugin name="countryfilter" priority="12" config="@b3/extplugins/conf/countryfilter.xml"/>
 
-The numer 12 in this just an example. Make sure it fits your
+The number 12 in this just an example. Make sure it fits your
 plugin list.
 
 
 Updating the Geo-data:
 ###################################################################################
 Download GeoIP.dat from
-http://www.maxmind.com/download/geoip/database/GeoIP.dat.gz
-and extract it into b3/extplugins/GeoIP/
+http://geolite.maxmind.com/download/geoip/database/GeoLiteCountry/GeoIP.dat.gz
+and extract it into extplugins/GeoIP/
 
 
 Changelog
@@ -63,6 +62,7 @@ Changelog
 v1.0.0         : Initial release
 v1.1.0         : Added !cfcountry command for already connected players
 v1.1.2         : Bugfix version
+v1.1.6         : Updated to work properly with B3 win32 standalone realease. Requires B3 v1.2.2
 
 ###################################################################################
 xlr8or - 7 may. 2007 - www.bigbrotherbot.com // www.xlr8or.com

@@ -51,7 +51,7 @@
     <!--
     Specify the path of GeoIP.dat file.
     -->    
-    <set name="cf_geoipdat_path">b3/extplugins/GeoIP/GeoIP.dat</set>
+    <set name="cf_geoipdat_path">@conf/extplugins/GeoIP/GeoIP.dat</set>
 
 	</settings>
 

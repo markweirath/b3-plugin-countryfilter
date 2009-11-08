@@ -16,14 +16,19 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #
+#
+# 08/11/2009 - 1.1.6 - Courgette
+#    * now uses PurePythonGeoIP bundled in b3.lib
+#    * reading config, makes use of getpath whenever applicable (allow to use
+#      @b3 and @conf)
 
-__version__ = '1.1.5'
+__version__ = '1.1.6'
 __author__  = 'guwashi / xlr8or'
 
 import sys, re, b3, threading
 import b3.events
-import b3.extplugins.GeoIP.PurePythonGeoIP
-from b3.extplugins.GeoIP.PurePythonGeoIP import GeoIP
+import b3.lib.PurePythonGeoIP
+from b3.lib.PurePythonGeoIP import GeoIP
 
 #--------------------------------------------------------------------------------------------------
 class CountryfilterPlugin(b3.plugin.Plugin):
@@ -118,7 +123,7 @@ class CountryfilterPlugin(b3.plugin.Plugin):
     except:
       pass
     try:
-      self.cf_geoipdat_path = self.config.get('settings', 'cf_geoipdat_path')
+      self.cf_geoipdat_path = self.config.getpath('settings', 'cf_geoipdat_path')
     except:
       pass
     try:
