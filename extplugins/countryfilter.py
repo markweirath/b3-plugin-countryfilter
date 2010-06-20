@@ -180,6 +180,7 @@ class CountryfilterPlugin(b3.plugin.Plugin):
     # http://httpd.apache.org/docs/mod/mod_access.html
     result = True
 
+    self.debug('Checking client: name: %s - ip: %s - level: %s' %(client.name, client.ip, client.maxLevel) )
     if client.maxLevel > self._maxLevel:
       self.debug('%s is a higher level user, and allowed to connect' %client.name )
       result = True
