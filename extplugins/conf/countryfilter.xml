@@ -84,6 +84,13 @@
     Seperate ip's with a ,
     -->    
     <set name="ips"></set>
+    <!--
+    The maxlevel defines the maximum level of players being handled by the filter.
+    Default = 1 meaning all players with level 0 and level 1 will be checked, higher
+    levels will not be filtered
+    -->
+    <set name="maxlevel">1</set>
+    
   </settings>
 
 	</settings>

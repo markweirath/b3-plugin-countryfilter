@@ -21,8 +21,10 @@
 #    * now uses PurePythonGeoIP bundled in b3.lib
 #    * reading config, makes use of getpath whenever applicable (allow to use
 #      @b3 and @conf)
+# 20/06/2010 - 1.1.7 - xlr8or
+#    * added client's maxlevel for filtering 
 
-__version__ = '1.1.6'
+__version__ = '1.1.7'
 __author__  = 'guwashi / xlr8or'
 
 import sys, re, b3, threading
@@ -44,6 +46,7 @@ class CountryfilterPlugin(b3.plugin.Plugin):
   cf_geoipdat_path = 'b3/extplugins/GeoIP/GeoIP.dat'
   ignore_names = []
   ignore_ips = []
+  _maxLevel = 1
 
   gi = None
 
@@ -134,6 +137,10 @@ class CountryfilterPlugin(b3.plugin.Plugin):
       self.ignore_ips = self.config.get('ignore', 'ips').split(",")
     except:
       pass
+    try:
+      self._maxLevel = self.config.getint('ignore', 'maxlevel')
+    except:
+      pass
 
 
   def onEvent(self, event):
@@ -173,7 +180,10 @@ class CountryfilterPlugin(b3.plugin.Plugin):
     # http://httpd.apache.org/docs/mod/mod_access.html
     result = True
 
-    if client.name in self.ignore_names:
+    if client.maxLevel > self._maxLevel:
+      self.debug('%s is a higher level user, and allowed to connect' %client.name )
+      result = True
+    elif client.name in self.ignore_names:
       self.debug('Name is on ignorelist, allways allowed to connect')
       result = True
     elif client.ip in self.ignore_ips:
