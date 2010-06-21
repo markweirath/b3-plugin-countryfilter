@@ -187,7 +187,7 @@ class CountryfilterPlugin(b3.plugin.Plugin):
     elif client.name in self.ignore_names:
       self.debug('Name is on ignorelist, allways allowed to connect')
       result = True
-    elif client.ip in self.ignore_ips:
+    elif str(client.ip) in self.ignore_ips:
       self.debug('Ip address is on ignorelist, allways allowed to connect')
       result = True
     elif 'allow,deny' == self.cf_order:
