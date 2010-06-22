@@ -23,8 +23,10 @@
 #      @b3 and @conf)
 # 20/06/2010 - 1.1.7 - xlr8or
 #    * added client's maxlevel for filtering 
+# 22/06/2010 - 1.1.8b - xlr8or
+#    * added some debug info 
 
-__version__ = '1.1.7'
+__version__ = '1.1.8b'
 __author__  = 'guwashi / xlr8or'
 
 import sys, re, b3, threading
@@ -133,14 +135,17 @@ class CountryfilterPlugin(b3.plugin.Plugin):
       self.ignore_names = self.config.get('ignore', 'names').split(",")
     except:
       pass
+    self.debug('Ignored names: %s' %self.ignore_names)
     try:
       self.ignore_ips = self.config.get('ignore', 'ips').split(",")
     except:
       pass
+    self.debug('Ignored IP\'s: %s' %self.ignore_ips)
     try:
       self._maxLevel = self.config.getint('ignore', 'maxlevel')
     except:
       pass
+    self.debug('Ignored maxLevel: %s' %self._maxLevel)
 
 
   def onEvent(self, event):
@@ -155,7 +160,7 @@ class CountryfilterPlugin(b3.plugin.Plugin):
     """\
     Examine players country and allow/deny to connect.
     """
-    self.debug('Connecting slot: %s, %s, %s' % (client.cid, client.name, client.ip))
+    self.debug('Connecting slot: %s, name: %s, ip: %s, level: %s' % (client.cid, client.name, client.ip, client.maxLevel))
     countryId = self.gi.id_by_addr(str(client.ip))
     countryCode = GeoIP.id_to_country_code(countryId)
     country = self.idToCountry(countryId)
@@ -180,7 +185,6 @@ class CountryfilterPlugin(b3.plugin.Plugin):
     # http://httpd.apache.org/docs/mod/mod_access.html
     result = True
 
-    self.debug('Checking client: name: %s - ip: %s - level: %s' %(client.name, client.ip, client.maxLevel) )
     if client.maxLevel > self._maxLevel:
       self.debug('%s is a higher level user, and allowed to connect' %client.name )
       result = True
