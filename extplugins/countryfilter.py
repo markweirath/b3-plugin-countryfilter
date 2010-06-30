@@ -25,8 +25,10 @@
 #    * added client's maxlevel for filtering 
 # 22/06/2010 - 1.1.8b - xlr8or
 #    * added some debug info 
+# 30/06/2010 - 1.1.8 - xlr8or
+#    * tested 
 
-__version__ = '1.1.8b'
+__version__ = '1.1.8'
 __author__  = 'guwashi / xlr8or'
 
 import sys, re, b3, threading
@@ -132,12 +134,16 @@ class CountryfilterPlugin(b3.plugin.Plugin):
     except:
       pass
     try:
-      self.ignore_names = self.config.get('ignore', 'names').split(",")
+      # seperate entries on the ,
+      _l = self.config.get('ignore', 'names').split(',')
+      # strip leading and trailing whitespaces from each list entry
+      self.ignore_names = [x.strip() for x in _l]
     except:
       pass
     self.debug('Ignored names: %s' %self.ignore_names)
     try:
-      self.ignore_ips = self.config.get('ignore', 'ips').split(",")
+      _l = self.config.get('ignore', 'ips').split(',')
+      self.ignore_ips = [x.strip() for x in _l]
     except:
       pass
     self.debug('Ignored IP\'s: %s' %self.ignore_ips)
