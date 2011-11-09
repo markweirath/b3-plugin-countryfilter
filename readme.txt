@@ -63,6 +63,8 @@ v1.0.0         : Initial release
 v1.1.0         : Added !cfcountry command for already connected players
 v1.1.2         : Bugfix version
 v1.1.6         : Updated to work properly with B3 win32 standalone realease. Requires B3 v1.2.2
-
+v1.2.0         : Added support for BF:BC2 (PB enabled servers only!)
+v1.2.1         : Added support for MOH (PB enabled servers only!)
+v1.3           : Added support for BF3 (PB enabled servers only!)
 ###################################################################################
 xlr8or - 7 may. 2007 - www.bigbrotherbot.com // www.xlr8or.com
