@@ -29,10 +29,12 @@
 #  * tested 
 # 29/07/2010 - 1.2.0 - xlr8or
 #  * Added support for BF:BC2 (PB enabled servers only!)
-# 30/10/2010 - 1.2.0 - xlr8or
+# 30/10/2010 - 1.2.1 - xlr8or
 #  * Added support for MOH (PB enabled servers only!)
+# 09/11/2010 - 1.3 - Courgette
+#  * Added support for BF3 (PB enabled servers only!)
 
-__version__ = '1.2.1'
+__version__ = '1.3'
 __author__  = 'guwashi / xlr8or'
 
 import sys, re, b3, threading
@@ -43,7 +45,7 @@ from b3.lib.PurePythonGeoIP import GeoIP
 #--------------------------------------------------------------------------------------------------
 class CountryfilterPlugin(b3.plugin.Plugin):
     # FrostBite Games depend on PB event to gather IP
-    _frostBiteGameNames = ['bfbc2', 'moh']
+    _frostBiteGameNames = ['bfbc2', 'moh', 'bf3']
     # Defaults
     _adminPlugin = None
     cf_country_print_mode = 'name'
