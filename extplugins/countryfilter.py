@@ -37,8 +37,10 @@
 #  * Moved maxlevel setting to 'settings section'
 #  * Added ip blocking function and section in config file
 #  * Fixed and re-ordered config file.
+# 04/12/2014 - 1.4.1 - xlr8or
+#  * Removed faulty semicolon
 
-__version__ = '1.4'
+__version__ = '1.4.1'
 __author__  = 'guwashi / xlr8or'
 
 import sys, re, b3, threading
@@ -246,7 +248,7 @@ class CountryfilterPlugin(b3.plugin.Plugin):
                 result = False
         else: # 'deny,allow' (default)
             #self.debug('deny,allow - checking')
-            result = True; # allow
+            result = True # allow
             if -1 != self.cf_deny_from.find('all'):
                 result = False
             if -1 != self.cf_deny_from.find(countryCode):
