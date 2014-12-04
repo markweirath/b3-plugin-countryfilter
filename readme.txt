@@ -2,7 +2,7 @@
 #
 # Plugin for B3 (www.bigbrotherbot.com)
 # Library and original code for Battlefield2 by Guwashi <guwashi[AT]fooos[DOT]com>
-# Plugin (c) 2006 www.xlr8or.com (mailto:xlr8or@xlr8or.com)
+# Plugin (c) 2006-2014 www.xlr8or.com
 #
 # This program is free software and licensed under the terms of
 # the GNU General Public License (GPL), version 2.
@@ -13,7 +13,7 @@
 # from http://maxmind.com/
 ###################################################################################
 
-Countryfilter (v1.1.x) for B3
+Countryfilter (v1.x) for B3
 ###################################################################################
 This plugin provides an allow/deny mechanism for connecting players based on their
 Country-IP (GeoIP data). It announces connecting players in the server so you can
@@ -27,8 +27,6 @@ Requirements:
 ###################################################################################
 
 - B3 version 1.2.2 or higher
-- CoD(any version) with PunkBuster enabled!
-
 
 Installation:
 ###################################################################################
@@ -44,10 +42,7 @@ for they will not function under a different name.
 3. Open your B3.xml file (in b3/conf) and add the next line in the
 <plugins> section of the file:
 
-<plugin name="countryfilter" priority="12" config="@b3/extplugins/conf/countryfilter.xml"/>
-
-The number 12 in this just an example. Make sure it fits your
-plugin list.
+<plugin name="countryfilter" config="@b3/extplugins/conf/countryfilter.xml"/>
 
 
 Updating the Geo-data:
@@ -66,5 +61,8 @@ v1.1.6         : Updated to work properly with B3 win32 standalone realease. Req
 v1.2.0         : Added support for BF:BC2 (PB enabled servers only!)
 v1.2.1         : Added support for MOH (PB enabled servers only!)
 v1.3           : Added support for BF3 (PB enabled servers only!)
+v1.4           : Moved maxlevel setting to 'settings section'
+                 Added ip blocking function and section in config file
+                 Fixed and re-ordered config file.
 ###################################################################################
-xlr8or - 7 may. 2007 - www.bigbrotherbot.com // www.xlr8or.com
+xlr8or - 2007/2014 - www.bigbrotherbot.net

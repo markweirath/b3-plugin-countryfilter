@@ -33,8 +33,12 @@
 #  * Added support for MOH (PB enabled servers only!)
 # 09/11/2010 - 1.3 - Courgette
 #  * Added support for BF3 (PB enabled servers only!)
+# 04/12/2014 - 1.4 - xlr8or
+#  * Moved maxlevel setting to 'settings section'
+#  * Added ip blocking function and section in config file
+#  * Fixed and re-ordered config file.
 
-__version__ = '1.3'
+__version__ = '1.4'
 __author__  = 'guwashi / xlr8or'
 
 import sys, re, b3, threading
@@ -58,6 +62,7 @@ class CountryfilterPlugin(b3.plugin.Plugin):
     cf_geoipdat_path = 'b3/extplugins/GeoIP/GeoIP.dat'
     ignore_names = []
     ignore_ips = []
+    block_ips = []
     _maxLevel = 1
 
     gi = None
@@ -110,20 +115,12 @@ class CountryfilterPlugin(b3.plugin.Plugin):
         Load the config
         """
         self.verbose('Loading config')
+
+        # settings section
         try:
             self.cf_country_print_mode = self.config.get('settings', 'cf_country_print_mode')
         except:
             pass
-        try:
-            self.cf_allow_message = self.config.get('messages', 'cf_allow_message')
-        except:
-            pass
-
-        try:
-            self.cf_deny_message = self.config.get('messages', 'cf_deny_message')
-        except:
-            pass
-
         try:
             self.cf_message_exclude_from = self.config.get('settings', 'cf_message_exclude_from')
         except:
@@ -145,6 +142,23 @@ class CountryfilterPlugin(b3.plugin.Plugin):
         except:
             pass
         try:
+            self._maxLevel = self.config.getint('settings', 'maxlevel')
+        except:
+            pass
+
+        # messages section
+        try:
+            self.cf_allow_message = self.config.get('messages', 'cf_allow_message')
+        except:
+            pass
+
+        try:
+            self.cf_deny_message = self.config.get('messages', 'cf_deny_message')
+        except:
+            pass
+
+        # ignore section
+        try:
             # seperate entries on the ,
             _l = self.config.get('ignore', 'names').split(',')
             # strip leading and trailing whitespaces from each list entry
@@ -158,11 +172,15 @@ class CountryfilterPlugin(b3.plugin.Plugin):
         except:
             pass
         self.debug('Ignored IP\'s: %s' %self.ignore_ips)
+        self.debug('Ignored maxLevel: %s' %self._maxLevel)
+
+        # block section
         try:
-            self._maxLevel = self.config.getint('ignore', 'maxlevel')
+            _l = self.config.get('block', 'ips').split(',')
+            self.block_ips = [x.strip() for x in _l]
         except:
             pass
-        self.debug('Ignored maxLevel: %s' %self._maxLevel)
+        self.debug('Blocked IP\'s: %s' %self.block_ips)
 
 
     def onEvent(self, event):
@@ -212,6 +230,9 @@ class CountryfilterPlugin(b3.plugin.Plugin):
         elif str(client.ip) in self.ignore_ips:
             self.debug('Ip address is on ignorelist, allways allowed to connect')
             result = True
+        elif str(client.ip) in self.block_ips:
+            self.debug('Ip address is on blocklist, never allowed to connect')
+            result = False
         elif 'allow,deny' == self.cf_order:
             #self.debug('allow,deny - checking')
             result = False # deny
