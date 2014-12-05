@@ -22,9 +22,9 @@
 #  * reading config, makes use of getpath whenever applicable (allow to use
 #    @b3 and @conf)
 # 20/06/2010 - 1.1.7 - xlr8or
-#  * added client's maxlevel for filtering 
+#  * added client's maxlevel for filtering
 # 22/06/2010 - 1.1.8b - xlr8or
-#  * added some debug info 
+#  * added some debug info
 # 30/06/2010 - 1.1.8 - xlr8or
 #  * tested 
 # 29/07/2010 - 1.2.0 - xlr8or
@@ -39,8 +39,11 @@
 #  * Fixed and re-ordered config file.
 # 04/12/2014 - 1.4.1 - xlr8or
 #  * Removed faulty semicolon
+# 05/12/2014 - 1.5 - xlr8or
+#  * Added player check on plugin start
+#  * Added bf4
 
-__version__ = '1.4.1'
+__version__ = '1.5'
 __author__  = 'guwashi / xlr8or'
 
 import sys, re, b3, threading
@@ -51,7 +54,7 @@ from b3.lib.PurePythonGeoIP import GeoIP
 #--------------------------------------------------------------------------------------------------
 class CountryfilterPlugin(b3.plugin.Plugin):
     # FrostBite Games depend on PB event to gather IP
-    _frostBiteGameNames = ['bfbc2', 'moh', 'bf3']
+    _frostBiteGameNames = ['bfbc2', 'moh', 'bf3', 'bf4']
     # Defaults
     _adminPlugin = None
     cf_country_print_mode = 'name'
@@ -81,7 +84,7 @@ class CountryfilterPlugin(b3.plugin.Plugin):
             # something is wrong, can't start without admin plugin
             self.error('Could not find admin plugin')
             return False
-        
+
         # register our commands
         if 'commands' in self.config.sections():
             for cmd in self.config.options('commands'):
@@ -184,6 +187,11 @@ class CountryfilterPlugin(b3.plugin.Plugin):
             pass
         self.debug('Blocked IP\'s: %s' %self.block_ips)
 
+        # check if connected players are allowed to connect
+        self.debug('Checking if connected players are allowed to connect.')
+        for c in self.console.clients.getList():
+            self.onPlayerConnect(c)
+
 
     def onEvent(self, event):
         """\
@@ -198,7 +206,7 @@ class CountryfilterPlugin(b3.plugin.Plugin):
         """\
         Examine players country and allow/deny to connect.
         """
-        self.debug('Connecting slot: %s, name: %s, ip: %s, level: %s' % (client.cid, client.name, client.ip, client.maxLevel))
+        self.debug('Checking player: %s, name: %s, ip: %s, level: %s' % (client.cid, client.name, client.ip, client.maxLevel))
         countryId = self.gi.id_by_addr(str(client.ip))
         countryCode = GeoIP.id_to_country_code(countryId)
         country = self.idToCountry(countryId)
@@ -213,9 +221,9 @@ class CountryfilterPlugin(b3.plugin.Plugin):
                 message = self.getMessage('cf_deny_message', { 'name':client.name,    'country':country})
                 self.console.say(message)
             client.kick(silent=True)
-        self.debug('Connecting done.')
+        self.debug('Checking done.')
 
-    
+
     def isAllowConnect(self, countryCode, client):
         """\
         Is player allowed to connect?
@@ -258,7 +266,7 @@ class CountryfilterPlugin(b3.plugin.Plugin):
             if -1 != self.cf_allow_from.find(countryCode):
                 result = True
         return result
-    
+
     def isMessageExcludeFrom(self, countryCode):
         """\
         Is message allowed to print?
@@ -269,7 +277,7 @@ class CountryfilterPlugin(b3.plugin.Plugin):
         if -1 != self.cf_message_exclude_from.find(countryCode):
             result = True
         return result
-    
+
     def idToCountry(self, countryId):
         """\
         Convert country id to country representation.
