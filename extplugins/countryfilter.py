@@ -18,8 +18,8 @@
 #
 #
 # 08/11/2009 - 1.1.6 - Courgette
-#  * now uses PurePythonGeoIP bundled in b3.lib
-#  * reading config, makes use of getpath whenever applicable (allow to use
+# * now uses PurePythonGeoIP bundled in b3.lib
+# * reading config, makes use of getpath whenever applicable (allow to use
 #    @b3 and @conf)
 # 20/06/2010 - 1.1.7 - xlr8or
 #  * added client's maxlevel for filtering
@@ -42,16 +42,18 @@
 # 05/12/2014 - 1.5 - xlr8or
 #  * Added player check on plugin start
 #  * Added bf4
+#  * PEP 8 changes
 
 __version__ = '1.5'
-__author__  = 'guwashi / xlr8or'
+__author__ = 'guwashi / xlr8or'
 
-import sys, re, b3, threading
+import b3
 import b3.events
 import b3.lib.PurePythonGeoIP
 from b3.lib.PurePythonGeoIP import GeoIP
 
-#--------------------------------------------------------------------------------------------------
+
+# --------------------------------------------------------------------------------------------------
 class CountryfilterPlugin(b3.plugin.Plugin):
     # FrostBite Games depend on PB event to gather IP
     _frostBiteGameNames = ['bfbc2', 'moh', 'bf3', 'bf4']
@@ -59,7 +61,7 @@ class CountryfilterPlugin(b3.plugin.Plugin):
     _adminPlugin = None
     cf_country_print_mode = 'name'
     cf_allow_message = '^7%(name)s ^2(Country: %(country)s)^7 connected.'
-    cf_deny_message =    '^7%(name)s ^1(Country: %(country)s)^7 was rejected by B3.'
+    cf_deny_message = '^7%(name)s ^1(Country: %(country)s)^7 was rejected by B3.'
     cf_message_exclude_from = ''
     cf_order = 'deny,allow'
     cf_deny_from = ''
@@ -72,10 +74,10 @@ class CountryfilterPlugin(b3.plugin.Plugin):
 
     gi = None
 
-
     def onStartup(self):
         """\
         Create a new GeoIP object and register callback functions.
+        :rtype : object
         """
 
         # get the admin plugin so we can register commands, issue kicks and such
@@ -105,7 +107,6 @@ class CountryfilterPlugin(b3.plugin.Plugin):
             self.registerEvent(b3.events.EVT_CLIENT_AUTH)
         self.debug('Started')
 
-
     def getCmd(self, cmd):
         cmd = 'cmd_%s' % cmd
         if hasattr(self, cmd):
@@ -113,7 +114,6 @@ class CountryfilterPlugin(b3.plugin.Plugin):
             return func
 
         return None
-
 
     def onLoadConfig(self):
         """\
@@ -170,14 +170,14 @@ class CountryfilterPlugin(b3.plugin.Plugin):
             self.ignore_names = [x.strip() for x in _l]
         except:
             pass
-        self.debug('Ignored names: %s' %self.ignore_names)
+        self.debug('Ignored names: %s' % self.ignore_names)
         try:
             _l = self.config.get('ignore', 'ips').split(',')
             self.ignore_ips = [x.strip() for x in _l]
         except:
             pass
-        self.debug('Ignored IP\'s: %s' %self.ignore_ips)
-        self.debug('Ignored maxLevel: %s' %self._maxLevel)
+        self.debug('Ignored IP\'s: %s' % self.ignore_ips)
+        self.debug('Ignored maxLevel: %s' % self._maxLevel)
 
         # block section
         try:
@@ -185,13 +185,12 @@ class CountryfilterPlugin(b3.plugin.Plugin):
             self.block_ips = [x.strip() for x in _l]
         except:
             pass
-        self.debug('Blocked IP\'s: %s' %self.block_ips)
+        self.debug('Blocked IP\'s: %s' % self.block_ips)
 
         # check if connected players are allowed to connect
         self.debug('Checking if connected players are allowed to connect.')
         for c in self.console.clients.getList():
             self.onPlayerConnect(c)
-
 
     def onEvent(self, event):
         """\
@@ -201,38 +200,37 @@ class CountryfilterPlugin(b3.plugin.Plugin):
         if event.type == b3.events.EVT_CLIENT_AUTH or event.type == b3.events.EVT_PUNKBUSTER_NEW_CONNECTION:
             self.onPlayerConnect(event.client)
 
-
     def onPlayerConnect(self, client):
         """\
         Examine players country and allow/deny to connect.
         """
-        self.debug('Checking player: %s, name: %s, ip: %s, level: %s' % (client.cid, client.name, client.ip, client.maxLevel))
+        self.debug(
+            'Checking player: %s, name: %s, ip: %s, level: %s' % (client.cid, client.name, client.ip, client.maxLevel))
         countryId = self.gi.id_by_addr(str(client.ip))
         countryCode = GeoIP.id_to_country_code(countryId)
         country = self.idToCountry(countryId)
-        self.debug('Country: %s' % (country))
+        self.debug('Country: %s' % country)
         if self.isAllowConnect(countryCode, client):
-            if (0 < len(self.cf_allow_message) and (not self.isMessageExcludeFrom(countryCode))) and client.guid and self.console.upTime() > 300:
-                message = self.getMessage('cf_allow_message', { 'name':client.name,    'country':country})
+            if (0 < len(self.cf_allow_message) and (
+                    not self.isMessageExcludeFrom(countryCode))) and client.guid and self.console.upTime() > 300:
+                message = self.getMessage('cf_allow_message', {'name': client.name, 'country': country})
                 self.console.say(message)
-            pass # do nothing
+            pass  # do nothing
         else:
             if 0 < len(self.cf_deny_message) and (not self.isMessageExcludeFrom(countryCode)):
-                message = self.getMessage('cf_deny_message', { 'name':client.name,    'country':country})
+                message = self.getMessage('cf_deny_message', {'name': client.name, 'country': country})
                 self.console.say(message)
             client.kick(silent=True)
         self.debug('Checking done.')
-
 
     def isAllowConnect(self, countryCode, client):
         """\
         Is player allowed to connect?
         """
         # http://httpd.apache.org/docs/mod/mod_access.html
-        result = True
 
         if client.maxLevel > self._maxLevel:
-            self.debug('%s is a higher level user, and allowed to connect' %client.name )
+            self.debug('%s is a higher level user, and allowed to connect' % client.name)
             result = True
         elif client.name in self.ignore_names:
             self.debug('Name is on ignorelist, allways allowed to connect')
@@ -244,8 +242,8 @@ class CountryfilterPlugin(b3.plugin.Plugin):
             self.debug('Ip address is on blocklist, never allowed to connect')
             result = False
         elif 'allow,deny' == self.cf_order:
-            #self.debug('allow,deny - checking')
-            result = False # deny
+            # self.debug('allow,deny - checking')
+            result = False  # deny
             if -1 != self.cf_allow_from.find('all'):
                 result = True
             if -1 != self.cf_allow_from.find(countryCode):
@@ -254,9 +252,9 @@ class CountryfilterPlugin(b3.plugin.Plugin):
                 result = False
             if -1 != self.cf_deny_from.find(countryCode):
                 result = False
-        else: # 'deny,allow' (default)
-            #self.debug('deny,allow - checking')
-            result = True # allow
+        else:  # 'deny,allow' (default)
+            # self.debug('deny,allow - checking')
+            result = True  # allow
             if -1 != self.cf_deny_from.find('all'):
                 result = False
             if -1 != self.cf_deny_from.find(countryCode):
@@ -286,19 +284,18 @@ class CountryfilterPlugin(b3.plugin.Plugin):
             return GeoIP.id_to_country_code3(countryId)
         elif 'name' == self.cf_country_print_mode:
             return GeoIP.id_to_country_name(countryId)
-        else: # 'code' (default)
+        else:  # 'code' (default)
             return GeoIP.id_to_country_code(countryId)
-
 
     def cmd_cfcountry(self, data, client, cmd=None):
         """\
         <player> - What country is this player from?
         """
         # this will split the player name and the message (oops, no message...)
-        input = self._adminPlugin.parseUserCmd(data)
-        if input:
+        _input = self._adminPlugin.parseUserCmd(data)
+        if _input:
             # input[0] is the player id
-            sclient = self._adminPlugin.findClientPrompt(input[0], client)
+            sclient = self._adminPlugin.findClientPrompt(_input[0], client)
             if not sclient:
                 # a player matchin the name was not found, a list of closest matches will be displayed
                 # we can exit here and the user will retry with a more specific player
@@ -311,9 +308,10 @@ class CountryfilterPlugin(b3.plugin.Plugin):
         countryId = self.gi.id_by_addr(str(sclient.ip))
         countryCode = GeoIP.id_to_country_code(countryId)
         country = self.idToCountry(countryId)
-        cmd.sayLoudOrPM(client, '^1%s^7 is connecting from ^1%s^7' % (sclient.name, country))
+        cmd.sayLoudOrPM(client, '^1%s^7 is connecting from ^1%s (%s)^7' % (sclient.name, country, countryCode))
 
         return True
 
+
 if __name__ == '__main__':
-    print '\nThis is version '+__version__+' by '+__author__+' for BigBrotherBot.\n'
+    print '\nThis is version ' + __version__ + ' by ' + __author__ + ' for BigBrotherBot.\n'
