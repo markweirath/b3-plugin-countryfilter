@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="description" content="B3-plugin-countryfilter : ">
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>B3-plugin-countryfilter</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/markweirath/b3-plugin-countryfilter">View on GitHub</a>
+
+          <h1 id="project_title">B3-plugin-countryfilter</h1>
+          <h2 id="project_tagline"></h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/markweirath/b3-plugin-countryfilter/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/markweirath/b3-plugin-countryfilter/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <p>This plugin provides an allow/deny mechanism for connecting players based on their
+Country-IP (GeoIP data). It announces connecting players in the server so you can
+see where the player is connecting from. Even if you don't have anny countries
+on the deny list, it's still nice to see where your playercrowd is connecting from!</p>
+
+<ul>
+<li>!cfcountry  will return the country the player is connecting from.</li>
+</ul>
+
+<h2>
+<a id="requirements" class="anchor" href="#requirements" aria-hidden="true"><span class="octicon octicon-link"></span></a>Requirements:</h2>
+
+<ul>
+<li>B3 version 1.2.2 or higher</li>
+</ul>
+
+<h2>
+<a id="installation" class="anchor" href="#installation" aria-hidden="true"><span class="octicon octicon-link"></span></a>Installation:</h2>
+
+<ol>
+<li><p>Unzip the contents of this package into your B3 folder. It will place the .py file in b3/extplugins and the config file  xml in your b3/extplugins/conf folder. </p></li>
+<li><p>Open the .xml file with your favorit editor and modify the settings if you want them different. Do not edit the ettingnames for they will not function under a different name.</p></li>
+<li><p>Open your B3.xml file (in b3/conf) and add the next line in the  section of the file:</p></li>
+</ol>
+
+<p><code>&lt;plugin name="countryfilter" config="@b3/extplugins/conf/countryfilter.xml"/&gt;</code></p>
+
+<h2>
+<a id="updating-the-geo-data" class="anchor" href="#updating-the-geo-data" aria-hidden="true"><span class="octicon octicon-link"></span></a>Updating the Geo-data:</h2>
+
+<ul>
+<li>Download GeoIP.dat from <a href="http://geolite.maxmind.com/download/geoip/database/GeoLiteCountry/GeoIP.dat.gz">http://geolite.maxmind.com/download/geoip/database/GeoLiteCountry/GeoIP.dat.gz</a> and extract it into extplugins/GeoIP/</li>
+</ul>
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">B3-plugin-countryfilter maintained by <a href="https://github.com/markweirath">markweirath</a></p>
+        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+    
+
+  </body>
+</html>
